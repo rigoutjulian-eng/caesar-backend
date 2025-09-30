@@ -1,12 +1,5 @@
-# Web framework
 flask==3.0.3
-
-# Serveur de production (Render utilise gunicorn pour lancer l’app)
 gunicorn==21.2.0
-
-# API OpenAI
-openai==1.47.0
-
-# Utilitaires (optionnel mais utile si tu fais évoluer le projet)
+openai>=1.47.0
 requests==2.32.3
 python-dotenv==1.0.1
