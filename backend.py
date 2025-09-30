@@ -30,17 +30,17 @@ def chat():
         # Préparer la conversation avec le prompt système
         conversation = [system_prompt] + user_messages
 
-        # Appel à OpenAI
-        response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",  # ou "gpt-3.5-turbo" selon ton compte
+        # Appel à OpenAI (nouvelle syntaxe)
+        response = openai.chat.completions.create(
+            model="gpt-4o-mini",
             messages=conversation,
             temperature=0.7
         )
 
         # Récupérer la réponse de Caesar
-        reply = response["choices"][0]["message"]["content"]
+        reply = response.choices[0].message.content
 
-        return jsonify(reply)
+        return jsonify({"reply": reply})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
