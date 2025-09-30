@@ -1,13 +1,12 @@
 from flask import Flask, request, jsonify
-import openai
+from openai import OpenAI
 import os
 
 app = Flask(__name__)
 
-# Récupère la clé OpenAI depuis les variables d'environnement Render
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Initialiser le client OpenAI avec la clé Render
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# Prompt système pour cadrer Caesar
 system_prompt = {
     "role": "system",
     "content": (
@@ -27,17 +26,15 @@ def chat():
         data = request.json
         user_messages = data.get("messages", [])
 
-        # Préparer la conversation avec le prompt système
         conversation = [system_prompt] + user_messages
 
-        # Appel à OpenAI (nouvelle syntaxe)
-        response = openai.chat.completions.create(
+        # Appel avec la nouvelle API
+        response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=conversation,
             temperature=0.7
         )
 
-        # Récupérer la réponse de Caesar
         reply = response.choices[0].message.content
 
         return jsonify({"reply": reply})
